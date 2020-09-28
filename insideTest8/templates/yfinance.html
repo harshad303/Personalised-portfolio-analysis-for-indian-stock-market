@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>YFINANCE</title>
+    <style>
+      #graph2{
+        position: absolute;
+        top: 170px;
+        right: 15px;
+      }
+
+
+    </style>
+
+
+</head>
+<body>
+    <h1>Single Script Analysis</h1>
+    <div id="container" style="width: 60%;">
+        <canvas id="complete-chart"></canvas>
+    </div>
+    <div id="id1">
+        <p1>High: {{high}}</p1><p1 style="color:green;"> &#9650</p1><br>
+        <p1>Low: {{low}}</p1><p1 style="color:red;"> &#9660</p1><br>
+        {% if latest_value > avg %}
+            <p1>&#9651 High: {{deltaHigh}} </p1><br>
+        {% endif %}
+        {% if latest_value < avg %}
+            <p1>&#9651 Low: {{deltaLow}} </p1><br>
+        {% endif %}
+        {% if latest_value == avg %}
+            <p1>&#9651 : 0 </p1><br>
+        {% endif %}
+    </div>
+
+
+    <div id="graph2"style="width:35%;">
+        <canvas id="latest-transaction"></canvas>
+         <div id="id2">
+        <p1>High: {{highLatest}}</p1><p1 style="color:green;"> &#9650</p1><br>
+        <p1>Low: {{lowLatest}}</p1><p1 style="color:red;"> &#9660</p1><br>
+        {% if current_latest_value > avgLatest %}
+            <p1>&#9651 High: {{deltaHighLatest}} </p1><br>
+        {% endif %}
+        {% if current_latest_value < avgLatest %}
+            <p1>&#9651 Low: {{deltaLowLatest}} </p1><br>
+        {% endif %}
+        {% if current_latest_value == avgLatest %}
+            <p1>&#9651 : 0 </p1><br>
+        {% endif %}
+    </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+    <script>
+
+    var config = {
+      type: 'line',
+      data: {
+        datasets: [{
+          data: {{avg_list|safe}},
+          backgroundColor: 'rgba(255, 99, 132, 0.2)',
+          borderColor:'rgba(255, 159, 56,0.8)',
+          pointRadius : 0,
+          label: 'AVERAGE',
+          fill: false,
+          borderWidth: 1
+        },
+        {
+          data: {{dataClose|safe }},
+          backgroundColor: 'rgba(0, 99, 132, 0.2)',
+          label: 'CLOSING PRICE',
+          radius:customRadius,
+          pointBackgroundColor:customColor,
+          borderWidth: 1
+        }
+        ],
+        labels: {{ labels|safe }}
+      },
+      options: {
+        responsive: true
+      }
+    };
+
+    var config2 = {
+      type: 'line',
+      data: {
+        datasets: [{
+          data: {{avg_list_latest|safe}},
+          backgroundColor: 'rgba(255, 99, 132, 0.2)',
+          borderColor:'rgba(255, 159, 56,0.8)',
+          pointRadius : 0,
+          label: 'AVERAGE',
+          fill: false,
+          borderWidth: 1
+        },
+        {
+          data: {{dataCloseLatest|safe }},
+          backgroundColor: 'rgba(0, 99, 132, 0.2)',
+          label: 'CLOSING PRICE',
+          radius:customRadius2,
+          pointBackgroundColor:customColor2,
+          borderWidth: 1
+        }
+        ],
+        labels: {{ labelsLatest|safe }}
+      },
+      options: {
+        responsive: true
+      }
+    };
+
+    window.onload = function() {
+      var ctx = document.getElementById('complete-chart').getContext('2d');
+      var ctx2= document.getElementById('latest-transaction').getContext('2d');
+      window.myPie = new Chart(ctx, config);
+      window.myPie= new Chart(ctx2, config2);
+    };
+
+     function customRadius( context )
+      {
+        let index = context.dataIndex;
+        let value = context.dataset.data[ index ];
+        return index == {{high_index}} ? 7 :
+               index == {{low_index}} ? 7:
+               2;
+      }
+
+    function customColor( context )
+      {
+        let index = context.dataIndex;
+        let value = context.dataset.data[ index ];
+        return index == {{high_index}} ? 'green' :
+               index == {{low_index}} ? 'red':
+               'blue';
+      }
+
+       function customRadius2( context )
+      {
+        let index = context.dataIndex;
+        let value = context.dataset.data[ index ];
+        return index == {{high_index_latest}} ? 7 :
+               index == {{low_index_latest}} ? 7:
+               2;
+      }
+
+    function customColor2( context )
+      {
+        let index = context.dataIndex;
+        let value = context.dataset.data[ index ];
+        return index == {{high_index_latest}} ? 'green' :
+               index == {{low_index_latest}} ? 'red':
+               'blue';
+      }
+
+  </script>
+</body>
+</html>

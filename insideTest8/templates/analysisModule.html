@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ANALYSIS</title>
+</head>
+<body>
+    <h1>Analysis</h1>
+    <p>Stock: {{stockName}} ({{stock_id}})</p><br>
+    <p>First Purchase Date: {{first_purchase_date}}</p><br>
+    <p>Sell Date: {{latest_sell_date}}</p><br>
+    <p>Average Purchase Price: &#x20b9; {{AvgPurchase}} </p><br>
+    <p>Average Price: &#x20b9; {{AvgPrice}}</p><br>
+    {% if AvgPrice <= AvgPurchase %}
+        <p>Loss incurred: &#x20b9; {{difference}}</p>
+        <p>Profit Date: {{profitdate}}</p>
+    {% else %}
+        <p>Profit incurred: &#x20b9; {{difference}}</p>
+    {% endif %}
+</body>
+</html>

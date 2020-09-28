@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>YFINANCE</title>
+
+
+
+</head>
+<body>
+    <h1>YFINANCE</h1>
+    <div id="container" style="width: 75%;">
+            </div>
+
+    <div>
+        <p1>High: {{high}}</p1><p1 style="color:green;"> &#9650</p1><br>
+        <p1>Low: {{low}}</p1><p1 style="color:red;"> &#9660</p1><br>
+        {% if latest_value > avg %}
+            <p1>&#9651 High: {{deltaHigh}} </p1><br>
+        {% endif %}
+        {% if latest_value < avg %}
+            <p1>&#9651 Low: {{deltaLow}} </p1><br>
+        {% endif %}
+        {% if latest_value == avg %}
+            <p1>&#9651 : 0 </p1><br>
+        {% endif %}
+    </div>
+
+
+    <script src="http://code.highcharts.com/highcharts.js"></script>
+<script src="http://code.highcharts.com/highcharts-more.js"></script>
+<script src="http://code.highcharts.com/modules/exporting.js"></script>
+    <script>
+        // var jsonday= JSON.parse('{{labels}}');
+        document.addEventListener('DOMContentLoaded', function () {
+        var myChart = Highcharts.chart('container', {
+            chart: {
+                type: 'line'
+            },
+            title: {
+                text: 'Portfolio Analysis'
+            },
+            credits:{
+            enabled: false
+            },
+            xAxis: {
+                categories:{{labels|safe}},
+            },
+            yAxis: {
+                title: {
+                    text: 'Fruit eaten'
+                }
+
+            },
+
+            series: [
+            {% for data in dataClose %}{
+
+                data: {{data}}
+
+                     },
+                      {% endfor %}
+                      ]
+        });
+    });
+
+
+		/* var config = {
+			type: 'line',
+			data: {
+				labels: {{labels|safe}},
+				datasets: [
+                {% for data1,data2,data3 in lists %}
+				{
+
+					label: '{{data2}}',
+					fill: false,
+					// Skip a point in the middle
+					data:{{data3}},
+					borderColor:'{{data1}}',
+
+				},
+				{% endfor %}
+				]
+			},
+			options: {
+				spanGaps: true,
+				responsive: true,
+				title: {
+					display: true,
+					text: 'Chart.js Line Chart - Skip Points'
+				},
+				tooltips: {
+					mode: 'index',
+				},
+				hover: {
+					mode: 'index'
+				},
+				scales: {
+					x: {
+						display: true,
+						scaleLabel: {
+							display: true,
+							labelString: 'Month'
+						}
+					},
+					y: {
+						display: true,
+						scaleLabel: {
+							display: true,
+							labelString: 'Value'
+						},
+					}
+				}
+			}
+		};
+    window.onload = function() {
+      var ctx = document.getElementById('pie-chart').getContext('2d');
+      window.myPie = new Chart(ctx, config);
+    }; */
+
+
+
+
+  </script>
+</body>
+</html>
